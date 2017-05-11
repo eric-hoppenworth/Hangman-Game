@@ -7,10 +7,11 @@ class Plant {
 		this.image = "assets/images/plant" + this.stage + ".png";
 		this.row = row;
 		this.col = col;
+		document.getElementById("row" + this.row).children[this.col].src = this.image;
 	}
 
 	grow() {
- 		alert(this.type + " is growing");
+ 		//alert(this.type + " is growing");
  		//change the growth stage and image
  		this.stage += 1;
  		if (this.stage > 4 ){
@@ -18,6 +19,13 @@ class Plant {
  		}
 		this.image = "assets/images/plant" + this.stage + ".png";
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
+	}
+
+	kill(myGame) {
+		//this kills the plant
+		this.image = "assets/images/dirt.png";
+		document.getElementById("row" + this.row).children[this.col].src = this.image;
+		myGame.plants.splice(-1,1);
 	}
 }
 //object constructor for game engine
@@ -27,7 +35,7 @@ function Game() {
 	this.guessCountNode = document.getElementById("guessCount").firstChild;
 	this.guessCount = 15;
 	//all lowercase
-	this.word= "garden";
+	this.word= "a";
 	this.guesses= [];
 	this.wins= 0;
 	this.correctLetters = 0;
@@ -81,13 +89,13 @@ function Game() {
 				//and the remaining guesses will decrease
 				this.guessCount -= 1;
 				this.guessCountNode.nodeValue = this.guessCount
-				if (this.guessCount <= 10 ){
-					//wilt 1
-				} else if (this.guessCount <= 5 ){
-					//wilt 2	
-				} else if (this.guessCount <= 0 ){
+				if (this.guessCount <= 0 ){
 					//you lose!
 					this.lose();
+				} else if (this.guessCount <= 5 ){
+					//wilt 2
+				} else if (this.guessCount <= 10 ){
+					//wilt 1
 				}
 
 			}
@@ -97,16 +105,29 @@ function Game() {
 	}
 
 	this.win = function() {
+		
+
 		//grow any plants
-		//start a newWord
 		for (var i = 0; i < this.plants.length; i++){
 			this.plants[i].grow();
 		}
+		//create a new plant only if there are fewer than 24
+		if (this.plants.length < 24){
+			var row = Math.floor(this.plants.length/4);
+			var col = this.plants.length % 4;
+
+			this.plants.push(new Plant(row,col));
+		}
+		
+
+		//start a newWord
 		this.newWord();
 	}
 
 	this.lose = function(){
 		//kill any plants
+		//change to plain dirt
+		this.plants[this.plants.length-1].kill(this);
 		//start a newWord
 		this.newWord();
 
@@ -114,7 +135,7 @@ function Game() {
 
 	this.newWord = function(){
 		//get a new word from some list somewhere
-		this.word = "garden"
+		this.word = "a"
 		//clear out the puzzle
 		var txt = ""
 		for (var i = 0; i < this.word.length; i++) {
@@ -146,6 +167,4 @@ function Game() {
 var myGame = new Game();
 myGame.newWord();
 
-var myPlant = new Plant(5,0);
-
-myGame.plants.push(new Plant(0,1));
+myGame.plants.push(new Plant(0,0));
