@@ -33,12 +33,12 @@ function Game() {
 	this.puzzle = document.getElementById("myPuzzle").firstChild;
 	this.guessLetters = document.getElementById("guessLetters").firstChild;
 	this.guessCountNode = document.getElementById("guessCount").firstChild;
-	this.guessCount = 15;
+	this.guessCount = globalGuessCount;
 	//all lowercase
 	this.word= "a";
 	this.guesses= [];
 	this.wins= 0;
-	this.correctLetters = 0;
+	this.remainingLetters = 100;
 	//collection of plants
 	this.plants = [];
 	this.rows = [];
@@ -68,7 +68,7 @@ function Game() {
 					//in the correct position
 					txt += " "+letter.toUpperCase();
 					isMatched = true;
-					this.correctLetters += 1
+					this.remainingLetters -= 1
 				} else {
 					//if the guess does not go in that spot, leave a blank
 					txt += " " + puzzleString[(i*2)+1];
@@ -79,7 +79,8 @@ function Game() {
 				//replace the word
 				this.puzzle.nodeValue = txt;
 				//check if the puzzle is finished
-				if (this.correctLetters === this.word.length){
+				//this does not correct for spaceBar characters
+				if (this.remainingLetters === 0){
 					//you win!
 					this.win();
 				}
@@ -125,9 +126,14 @@ function Game() {
 	}
 
 	this.lose = function(){
-		//kill any plants
-		//change to plain dirt
-		this.plants[this.plants.length-1].kill(this);
+		//kill any plants based on the number of missing letters
+		var missingLetters = this.word.length - this.correctLetters;
+		for (var i = 1; i <= missingLetters; i++){
+			if(this.plants.length-i > 0){
+				this.plants[this.plants.length-1].kill(this);
+			}
+		}
+		
 		//start a newWord
 		this.newWord();
 
@@ -135,19 +141,30 @@ function Game() {
 
 	this.newWord = function(){
 		//get a new word from some list somewhere
-		this.word = "a"
+		var rand = getRandomInt(0,myWords.length-1);
+		this.word = myWords[rand];
+		myWords.splice(rand,1);
+		//debug line
+		//this.word = "garden plant"
+		this.remainingLetters = this.word.length
 		//clear out the puzzle
 		var txt = ""
+		//this corrects for spaceBar characters
 		for (var i = 0; i < this.word.length; i++) {
-			txt += " _";
+			if (this.word[i]=== " "){
+				//take away a remaing letter, since spaceBar is not going to be guessed
+				this.remainingLetters -= 1;
+				txt += " -";
+			} else{
+				txt += " _";	
+			}
 		}
 		this.puzzle.nodeValue = txt;
 		//clear out the guesses
 		this.guesses = [];
 		this.guessLetters.nodeValue = " ";
-		this.guessCount = 15;
+		this.guessCount = globalGuessCount;
 		this.guessCountNode.nodeValue = this.guessCount;
-		this.correctLetters = 0;
 	}
 	
 	document.onkeypress = function(event) {
@@ -161,10 +178,19 @@ function Game() {
 		
 	}
 }
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
-
-
+var globalGuessCount = 15;
 var myGame = new Game();
+var myWords = words;
+
 myGame.newWord();
 
 myGame.plants.push(new Plant(0,0));
+
+
+
