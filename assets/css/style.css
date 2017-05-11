@@ -1,0 +1,65 @@
+html, body{
+	height:100%;
+	width: 100%;
+}
+#myGarden{
+	box-sizing: border-box;
+	float:left;
+	height:100%;
+	width: 33.333%;
+	padding:20px;
+	background: darkgreen;
+}
+#playArea{
+	float:right;
+	height: 100%;
+	width: 66.6666%;
+}
+#myBoard{
+	float:none;
+	height: 66.6666%;
+	width: 100%;
+	background: skyblue;
+}
+#myBoard h1{
+	display: inline-block;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	font-size: 100px;
+	transform: translate(-50%, -50%);
+}
+#myGuess{
+	float: none;
+	height: 33.33333%;
+	width: 100%;
+}
+#myGuess p {
+	float:left;
+	margin: 15px;
+	margin-right: 0;
+}
+#myGuess h3{
+	clear:both;
+}
+#guessLetters {
+	display: inline-block;
+	position: relative;
+	top:50%;
+	transform: translate(-50%, -50%);
+	font-size: 30px;
+
+}
+.row {
+	width: 100%;
+	height: auto;
+	float:none;
+}
+.row img {
+	float: left;
+	width: 25%;
+	height: auto;
+}
+/*style="transform: scaleX(-1);" can be used to flip images, but the dirt flips too*/
+/*Maybe use a media query to make the board different on phones.  
+The garden is too small*/
