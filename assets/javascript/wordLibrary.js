@@ -1,4 +1,4 @@
-var words = [ "lawn", "patio", "landscaping", "nursery", "backyard", "orchard", 
+var wordList = [ "lawn", "patio", "landscaping", "nursery", "backyard", "orchard", 
 "horticulture", "courtyard", "vine", "vegetable", "park", "waterfall", "fence", 
 "estate", "countryside", "yard", "landscape", "sun", "plot", "shrub", "crepe myrtle", 
 "bonsai", "bench", "flowerbed", "arboretum", "botanical garden", "flower", "greenery", 

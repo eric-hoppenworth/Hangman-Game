@@ -30,12 +30,14 @@ class Plant {
 }
 //object constructor for game engine
 function Game() {
-	this.puzzle = document.getElementById("myPuzzle").firstChild;
+	//will need to reference the even children of puzzle
+	this.puzzle = document.getElementById("myPuzzle"); 
 	this.guessLetters = document.getElementById("guessLetters").firstChild;
 	this.guessCountNode = document.getElementById("guessCount").firstChild;
 	this.guessCount = globalGuessCount;
 	//all lowercase
 	this.word= "a";
+	this.words = [];
 	this.guesses= [];
 	this.wins= 0;
 	this.remainingLetters = 100;
@@ -44,11 +46,13 @@ function Game() {
 	this.rows = [];
 
 	this.guess = function(letter){
-		var i = 0
+		var i = 0;
+		var j = 0;
 		var isMatched = false;
 		var isGuessed = false;
 		var txt = "";
-		var puzzleString = this.puzzle.nodeValue
+		//this needs to be adjusted to allow multiple words
+		var puzzleString ;
 		//first, see if the letter has already been guessed
 		for (i =0; i < this.guesses.length; i++){
 			if (this.guesses[i] === letter.toUpperCase()){
@@ -62,22 +66,26 @@ function Game() {
 			//add it to the guesses
 			this.guesses.push(letter.toUpperCase());
 			//when a guess is made, see if it is in the puzzle word
-			for (i =0;i< this.word.length;i++){
-				if (this.word[i].toLowerCase() === letter){
-					//if any particular letter matches, I want it to show up on the screen
-					//in the correct position
-					txt += " "+letter.toUpperCase();
-					isMatched = true;
-					this.remainingLetters -= 1
-				} else {
-					//if the guess does not go in that spot, leave a blank
-					txt += " " + puzzleString[(i*2)+1];
+			for (j = 0; j < this.words.length; j++){
+				puzzleString = this.puzzle.childNodes[j*2].nodeValue;
+				for (i =0;i< this.words[j].length;i++){
+					if (this.words[j][i].toLowerCase() === letter){
+						//if any particular letter matches, I want it to show up on the screen
+						//in the correct position
+						txt += " "+letter.toUpperCase();
+						isMatched = true;
+						this.remainingLetters -= 1;
+					} else {
+						//if the guess does not go in that spot, leave a blank
+						txt += " " + puzzleString[(i*2)+1];
+					}
 				}
+				//replace the word
+				this.puzzle.childNodes[j*2].nodeValue = txt;
+				txt = "";
 			}
 			
 			if (isMatched) {
-				//replace the word
-				this.puzzle.nodeValue = txt;
 				//check if the puzzle is finished
 				//this does not correct for spaceBar characters
 				if (this.remainingLetters === 0){
@@ -89,7 +97,7 @@ function Game() {
 				this.guessLetters.nodeValue += letter.toUpperCase() + " , ";
 				//and the remaining guesses will decrease
 				this.guessCount -= 1;
-				this.guessCountNode.nodeValue = this.guessCount
+				this.guessCountNode.nodeValue = this.guessCount;
 				if (this.guessCount <= 0 ){
 					//you lose!
 					this.lose();
@@ -127,7 +135,7 @@ function Game() {
 
 	this.lose = function(){
 		//kill any plants based on the number of missing letters
-		var missingLetters = this.word.length - this.correctLetters;
+		var missingLetters = this.remainingLetters;
 		for (var i = 1; i <= missingLetters; i++){
 			if(this.plants.length-i > 0){
 				this.plants[this.plants.length-1].kill(this);
@@ -144,22 +152,26 @@ function Game() {
 		var rand = getRandomInt(0,myWords.length-1);
 		this.word = myWords[rand];
 		myWords.splice(rand,1);
-		//debug line
-		//this.word = "garden plant"
-		this.remainingLetters = this.word.length
+		//this.word = "garden party";
+		//split the chosen word into an array of words
+		this.words = this.word.split(" ");
+		this.remainingLetters = 0;
 		//clear out the puzzle
-		var txt = ""
-		//this corrects for spaceBar characters
-		for (var i = 0; i < this.word.length; i++) {
-			if (this.word[i]=== " "){
-				//take away a remaing letter, since spaceBar is not going to be guessed
-				this.remainingLetters -= 1;
-				txt += " -";
-			} else{
+		var txt;
+		while (this.puzzle.hasChildNodes()) {
+			this.puzzle.removeChild(this.puzzle.lastChild);
+		}
+		for (var j = 0; j< this.words.length; j++) {
+			txt = "";
+			this.remainingLetters += this.words[j].length;
+			for (var i = 0; i < this.words[j].length; i++) {
 				txt += " _";	
 			}
+
+			myGame.puzzle.appendChild(document.createTextNode(txt));
+			myGame.puzzle.appendChild(document.createElement('br'));
 		}
-		this.puzzle.nodeValue = txt;
+
 		//clear out the guesses
 		this.guesses = [];
 		this.guessLetters.nodeValue = " ";
@@ -186,11 +198,8 @@ function getRandomInt(min, max) {
 
 var globalGuessCount = 15;
 var myGame = new Game();
-var myWords = words;
+var myWords = wordList;
 
 myGame.newWord();
 
 myGame.plants.push(new Plant(0,0));
-
-
-
