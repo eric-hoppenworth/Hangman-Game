@@ -4,7 +4,7 @@ class Plant {
 		this.stage = 0;
 		this.condition = 0;
 		this.type = "tomato";
-		this.image = "assets/images/plant" + this.stage + ".png";
+		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
 		this.row = row;
 		this.col = col;
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
@@ -17,7 +17,16 @@ class Plant {
  		if (this.stage > 4 ){
  			this.stage = 3;
  		}
-		this.image = "assets/images/plant" + this.stage + ".png";
+ 		//reset to healthy plant
+ 		this.condition = 0;
+		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
+		document.getElementById("row" + this.row).children[this.col].src = this.image;
+	}
+
+	wilt() {
+		//change wilt to the next stage
+		this.condition = 1;
+		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
 	}
 
@@ -98,13 +107,21 @@ function Game() {
 				//and the remaining guesses will decrease
 				this.guessCount -= 1;
 				this.guessCountNode.nodeValue = this.guessCount;
-				if (this.guessCount <= 0 ){
+				if (this.guessCount === 0 ){
 					//you lose!
 					this.lose();
-				} else if (this.guessCount <= 5 ){
-					//wilt 2
-				} else if (this.guessCount <= 10 ){
-					//wilt 1
+				} else if (this.guessCount === Math.floor(globalGuessCount/3) ){
+					//wilt all plants
+					for (var i= 0;i < this.plants.length;i++){
+						this.plants[i].wilt();
+					}
+				} else if (this.guessCount === Math.floor(globalGuessCount*2/3) ){
+					//wilt some plants
+					for (var i= 0;i < this.plants.length;i++){
+						if (Math.random() < 0.5){
+							this.plants[i].wilt();
+						}
+					}
 				}
 
 			}
@@ -149,10 +166,10 @@ function Game() {
 
 	this.newWord = function(){
 		//get a new word from some list somewhere
-		var rand = getRandomInt(0,myWords.length-1);
-		this.word = myWords[rand];
-		myWords.splice(rand,1);
-		//this.word = "garden party";
+		// var rand = getRandomInt(0,myWords.length-1);
+		// this.word = myWords[rand];
+		// myWords.splice(rand,1);
+		this.word = "a";
 		//split the chosen word into an array of words
 		this.words = this.word.split(" ");
 		this.remainingLetters = 0;
