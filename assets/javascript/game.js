@@ -137,7 +137,7 @@ function Game() {
 		//kill any plants based on the number of missing letters
 		var missingLetters = this.remainingLetters;
 		for (var i = 1; i <= missingLetters; i++){
-			if(this.plants.length-i > 0){
+			if(this.plants.length-i >= 0){
 				this.plants[this.plants.length-1].kill(this);
 			}
 		}
