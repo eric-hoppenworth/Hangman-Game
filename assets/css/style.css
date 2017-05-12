@@ -2,14 +2,41 @@ html, body{
 	height:100%;
 	width: 100%;
 }
-#myGarden{
-	box-sizing: border-box;
-	float:left;
-	height:100%;
-	width: 33.333%;
-	padding:20px;
+
+#leftArea{
+	height: 100%;
+	width: 33.3333333%;
+	float: left;
 	background: darkgreen;
 }
+#myGarden{
+	box-sizing: border-box;
+	float:none;
+	height:80%;
+	width: 100%;
+	padding:20px;
+	
+}
+#scoreArea{
+	box-sizing: border-box;
+	padding: 20px;
+	height: 20%;
+	width: 100%;
+}
+#scoreArea p {
+	float:left;
+	margin-right: 96px;
+	font-size: 16px;
+	margin-top: 16px;
+	margin-left: 10px;
+	color: #eee;
+}
+#scoreArea img {
+	height: 48px;
+	width: auto;
+	float: left;
+}
+
 #playArea{
 	float:right;
 	height: 100%;

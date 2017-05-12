@@ -7,6 +7,14 @@ class Plant {
 		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
 		this.row = row;
 		this.col = col;
+		this.scoreElm = document.getElementById(this.type + "Score");
+		if (this.type === "tomato"){
+			this.cycle = 1;
+			this.fruitCount = 4;
+		} else if (this.type === "pepper"){
+			this.cycle = 2;
+			this.fruitCount = 2;
+		}
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
 	}
 
@@ -14,8 +22,11 @@ class Plant {
  		//alert(this.type + " is growing");
  		//change the growth stage and image
  		this.stage += 1;
- 		if (this.stage > 4 ){
- 			this.stage = 3;
+ 		if (this.stage > lastPlantStage + this.cycle ){
+ 			this.stage = lastPlantStage;
+ 		} else if (this.stage === lastPlantStage + this.cycle ){
+ 			//this plant will produce fruit now
+ 			this.scoreElm.innerHTML = parseInt(this.scoreElm.innerHTML,10) + (this.fruitCount-this.condition);
  		}
  		//reset to healthy plant
  		this.condition = 0;
@@ -49,7 +60,8 @@ function Game() {
 	this.words = [];
 	this.guesses= [];
 	this.wins= 0;
-	this.remainingLetters = 100;
+	//this will be set just extra high
+	this.remainingLetters = 1000;
 	//collection of plants
 	this.plants = [];
 	this.rows = [];
@@ -60,7 +72,6 @@ function Game() {
 		var isMatched = false;
 		var isGuessed = false;
 		var txt = "";
-		//this needs to be adjusted to allow multiple words
 		var puzzleString ;
 		//first, see if the letter has already been guessed
 		for (i =0; i < this.guesses.length; i++){
@@ -90,6 +101,7 @@ function Game() {
 					}
 				}
 				//replace the word
+				//every other child is a text node (due to line breaks)
 				this.puzzle.childNodes[j*2].nodeValue = txt;
 				txt = "";
 			}
@@ -131,23 +143,24 @@ function Game() {
 	}
 
 	this.win = function() {
-		
+		//alert("You got the word-- " + this.word.toUpperCase());
 
 		//grow any plants
 		for (var i = 0; i < this.plants.length; i++){
 			this.plants[i].grow();
 		}
 		//create a new plant only if there are fewer than 24
-		if (this.plants.length < 24){
-			var row = Math.floor(this.plants.length/4);
-			var col = this.plants.length % 4;
+		if (this.plants.length < plantMax){
+			var row = Math.floor(this.plants.length/rowWidth);
+			var col = this.plants.length % rowWidth	;
 
 			this.plants.push(new Plant(row,col));
 		}
 		
 
 		//start a newWord
-		this.newWord();
+		//this.newWord();
+		waiting = true;
 	}
 
 	this.lose = function(){
@@ -160,16 +173,19 @@ function Game() {
 		}
 		
 		//start a newWord
-		this.newWord();
+		//this.newWord();
+		waiting = true;
 
 	}
 
 	this.newWord = function(){
+		waiting = false;
 		//get a new word from some list somewhere
-		// var rand = getRandomInt(0,myWords.length-1);
-		// this.word = myWords[rand];
-		// myWords.splice(rand,1);
-		this.word = "a";
+		var rand = getRandomInt(0,myWords.length-1);
+		this.word = myWords[rand];
+		myWords.splice(rand,1);
+		//debug line
+		//this.word = "a";
 		//split the chosen word into an array of words
 		this.words = this.word.split(" ");
 		this.remainingLetters = 0;
@@ -184,7 +200,7 @@ function Game() {
 			for (var i = 0; i < this.words[j].length; i++) {
 				txt += " _";	
 			}
-
+			//add each word as its own line and a <br> after it.
 			myGame.puzzle.appendChild(document.createTextNode(txt));
 			myGame.puzzle.appendChild(document.createElement('br'));
 		}
@@ -199,6 +215,9 @@ function Game() {
 	document.onkeypress = function(event) {
 		var charCode = event.which;
 		//Catches letters only
+		if (waiting){
+			myGame.newWord();
+		}
 		if ((charCode >= 97 )&&(charCode <= 122)){
 			var letter = String.fromCharCode(charCode);
 			//should come in as lowercase anyway, but just to be sure
@@ -216,7 +235,16 @@ function getRandomInt(min, max) {
 var globalGuessCount = 15;
 var myGame = new Game();
 var myWords = wordList;
+var rowWidth = 4;
+var rows = 5;
+var plantMax = rowWidth*rows;
+var waiting = true;
+var lastPlantStage = 3;
+var tomScore = 0;
+var pepScore = 0;
 
-myGame.newWord();
-
+//create a plant and start the game.
 myGame.plants.push(new Plant(0,0));
+//myGame.newWord();
+
+
