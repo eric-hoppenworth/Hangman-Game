@@ -3,91 +3,98 @@ html, body{
 	width: 100%;
 }
 
+/*controls the left side of the board*/
 #leftArea{
 	height: 100%;
 	width: 33.3333333%;
 	float: left;
 	background: darkgreen;
 }
-#myGarden{
-	box-sizing: border-box;
-	float:none;
-	height:80%;
-	width: 100%;
-	padding:20px;
-	
-}
-#scoreArea{
-	box-sizing: border-box;
-	padding: 20px;
-	height: 20%;
-	width: 100%;
-}
-#scoreArea p {
-	float:left;
-	margin-right: 96px;
-	font-size: 16px;
-	margin-top: 16px;
-	margin-left: 10px;
-	color: #eee;
-}
-#scoreArea img {
-	height: 48px;
-	width: auto;
-	float: left;
-}
+	/*Garden area, left top*/
+	#myGarden{
+		box-sizing: border-box;
+		float:none;
+		height:80%;
+		width: 100%;
+		padding:20px;
+		
+	}
+	.row {
+		width: 100%;
+		height: auto;
+		float:none;
+	}
+	.row img {
+		float: left;
+		width: 25%;
+		height: auto;
+	}
+	/*Score area, left bottom*/
+	#scoreArea{
+		box-sizing: border-box;
+		padding: 20px;
+		height: 20%;
+		width: 100%;
+	}
+	#scoreArea p {
+		float:left;
+		margin-right: 96px;
+		font-size: 16px;
+		margin-top: 16px;
+		margin-left: 10px;
+		color: #eee;
+	}
+	#scoreArea img {
+		height: 48px;
+		width: auto;
+		float: left;
+	}
 
+/*Controls the right side of the board*/
 #playArea{
 	float:right;
 	height: 100%;
 	width: 66.6666%;
 }
-#myBoard{
-	float:none;
-	height: 66.6666%;
-	width: 100%;
-	background: skyblue;
-}
-#myBoard h1{
-	display: inline-block;
-	position: relative;
-	top: 50%;
-	left: 50%;
-	font-size: 100px;
-	transform: translate(-50%, -50%);
-	text-align: center;
-}
-#myGuess{
-	float: none;
-	height: 33.33333%;
-	width: 100%;
-}
-#myGuess p {
-	float:left;
-	margin: 15px;
-	margin-right: 0;
-}
-#myGuess h3{
-	clear:both;
-}
-#guessLetters {
-	display: inline-block;
-	position: relative;
-	top:50%;
-	transform: translate(0, -50%);
-	font-size: 30px;
+	/*Puzzle region, holds the puzzle*/
+	#myBoard{
+		float:none;
+		height: 66.6666%;
+		width: 100%;
+		background: skyblue;
+	}
+	#myBoard h1{
+		display: inline-block;
+		position: relative;
+		top: 50%;
+		left: 50%;
+		font-size: 60px;
+		transform: translate(-50%, -50%);
+		text-align: center;
+	}
+	/*Area that displays a list of guesses*/
+	#myGuess{
+		float: none;
+		height: 33.33333%;
+		width: 100%;
+	}
+	#myGuess p {
+		float:left;
+		margin: 15px;
+		margin-right: 0;
+	}
+	#myGuess h3{
+		clear:both;
+	}
+	#guessLetters {
+		display: inline-block;
+		position: relative;
+		top:50%;
+		transform: translate(0, -50%);
+		font-size: 30px;
 
-}
-.row {
-	width: 100%;
-	height: auto;
-	float:none;
-}
-.row img {
-	float: left;
-	width: 25%;
-	height: auto;
-}
+	}
+
 /*style="transform: scaleX(-1);" can be used to flip images, but the dirt flips too*/
 /*Maybe use a media query to make the board different on phones.  
 The garden is too small*/

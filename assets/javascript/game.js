@@ -3,19 +3,10 @@ class Plant {
 	constructor(row,col) {
 		this.stage = 0;
 		this.condition = 0;
-		this.type = "tomato";
-		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
 		this.row = row;
 		this.col = col;
-		this.scoreElm = document.getElementById(this.type + "Score");
-		if (this.type === "tomato"){
-			this.cycle = 1;
-			this.fruitCount = 4;
-		} else if (this.type === "pepper"){
-			this.cycle = 2;
-			this.fruitCount = 2;
-		}
-		document.getElementById("row" + this.row).children[this.col].src = this.image;
+		this.elem = document.getElementById("row"+this.row).children[this.col];
+		
 	}
 
 	grow() {
@@ -25,38 +16,73 @@ class Plant {
  		if (this.stage > lastPlantStage + this.cycle ){
  			this.stage = lastPlantStage;
  			//this plant will produce fruit now
- 			this.scoreElm.innerHTML = parseInt(this.scoreElm.innerHTML,10) + (this.fruitCount-this.condition);
+ 			this.scoreElem.innerHTML = parseInt(this.scoreElem.innerHTML,10) + (this.fruitCount-this.condition);
  		}
  		//reset to healthy plant
  		this.condition = 0;
-		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
-		document.getElementById("row" + this.row).children[this.col].src = this.image;
+		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
+		this.elem.src = this.image;
 	}
 
 	wilt() {
 		//change wilt to the next stage
 		this.condition = 1;
-		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
-		document.getElementById("row" + this.row).children[this.col].src = this.image;
+		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
+		this.elem.src = this.image;
 	}
 
 	kill(myGame) {
 		//this kills the plant
 		this.image = "assets/images/dirt.png";
-		document.getElementById("row" + this.row).children[this.col].src = this.image;
+		this.elem.src = this.image;
+		//removes the LAST plant from the array
+		//technically this functionality is broken, but when .kill is called I am only ever
+		//killing the last plant in the array.
 		myGame.plants.splice(-1,1);
 	}
 }
+//Tomato class, a specific type of plant
+class Tomato extends Plant{
+	constructor(row,col){
+		//first call the constructor for the plant class
+		super(row,col);
+		this.type = "tomato";
+		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
+		this.cycle = 1;
+		this.fruitCount = 4;
+		this.scoreElem = document.getElementById(this.type + "Score");
+		this.elem.src = this.image;
+
+	}
+}
+//Pepper class, a specfic type of plant
+class Pepper extends Plant{
+	constructor(row,col){
+		//first call the constructor for the plant class
+		super(row,col);
+		this.type = "pepper";
+		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
+		this.cycle = 2;
+		this.fruitCount = 3;
+		this.scoreElem = document.getElementById(this.type + "Score");
+		this.elem.src = this.image;
+	}
+}
+
 //object constructor for game engine
 function Game() {
-	//will need to reference the even children of puzzle
-	this.puzzle = document.getElementById("myPuzzle"); 
+	 
 	this.guessLetters = document.getElementById("guessLetters").firstChild;
 	this.guessCountNode = document.getElementById("guessCount").firstChild;
 	this.guessCount = globalGuessCount;
-	//all lowercase
+	
+	//holds the HTML element that containss thh puzzle
+	this.puzzle = document.getElementById("myPuzzle");
+	//all lowercase, holds the current puzzl, might be more than one word
 	this.word= "a";
+	//all lowercase, holds each word of a multi-word puzzle
 	this.words = [];
+	
 	this.guesses= [];
 	this.wins= 0;
 	//this will be set just extra high
@@ -153,7 +179,8 @@ function Game() {
 			var row = Math.floor(this.plants.length/rowWidth);
 			var col = this.plants.length % rowWidth	;
 
-			this.plants.push(new Plant(row,col));
+			//this.plants.push(new Tomato(row,col));
+			this.plants.push(new Pepper(row,col));
 		}
 		
 
@@ -184,7 +211,7 @@ function Game() {
 		this.word = myWords[rand];
 		myWords.splice(rand,1);
 		//debug line
-		//this.word = "a";
+		//this.word = "horticulturalist";
 		//split the chosen word into an array of words
 		this.words = this.word.split(" ");
 		this.remainingLetters = 0;
@@ -226,9 +253,10 @@ function Game() {
 	}
 }
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+	//gets a random integer between min and max, inclusive
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min)) + min;
 }
 
 var globalGuessCount = 15;
@@ -243,7 +271,7 @@ var tomScore = 0;
 var pepScore = 0;
 
 //create a plant and start the game.
-myGame.plants.push(new Plant(0,0));
+myGame.plants.push(new Tomato(0,0));
 //myGame.newWord();
 
 
