@@ -4,7 +4,7 @@ class Plant {
 		this.stage = 0;
 		this.condition = 0;
 		this.type = "tomato";
-		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
+		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
 		this.row = row;
 		this.col = col;
 		this.scoreElm = document.getElementById(this.type + "Score");
@@ -24,20 +24,19 @@ class Plant {
  		this.stage += 1;
  		if (this.stage > lastPlantStage + this.cycle ){
  			this.stage = lastPlantStage;
- 		} else if (this.stage === lastPlantStage + this.cycle ){
  			//this plant will produce fruit now
  			this.scoreElm.innerHTML = parseInt(this.scoreElm.innerHTML,10) + (this.fruitCount-this.condition);
  		}
  		//reset to healthy plant
  		this.condition = 0;
-		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
+		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
 	}
 
 	wilt() {
 		//change wilt to the next stage
 		this.condition = 1;
-		this.image = "assets/images/plant" + this.stage + this.condition + ".png";
+		this.image = "assets/images/" this.type + this.stage + this.condition + ".png";
 		document.getElementById("row" + this.row).children[this.col].src = this.image;
 	}
 
