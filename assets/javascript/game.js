@@ -6,7 +6,9 @@ class Plant {
 		this.row = row;
 		this.col = col;
 		this.elem = document.getElementById("row"+this.row).children[this.col];
-		
+
+		//this will be overridden by the other classes
+		this.type = "plant";
 	}
 
 	grow() {
@@ -85,11 +87,10 @@ function Game() {
 	
 	this.guesses= [];
 	this.wins= 0;
-	//this will be set just extra high
+	//this will be set just extra high. is overwriten when a word is chosen
 	this.remainingLetters = 1000;
 	//collection of plants
 	this.plants = [];
-	this.rows = [];
 
 	this.guess = function(letter){
 		var i = 0;
@@ -273,5 +274,6 @@ var pepScore = 0;
 //create a plant and start the game.
 myGame.plants.push(new Tomato(0,0));
 //myGame.newWord();
+//newWord will be called when a key is pressed
 
 
