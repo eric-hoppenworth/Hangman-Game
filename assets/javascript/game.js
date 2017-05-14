@@ -181,7 +181,10 @@ function Game() {
 			var col = this.plants.length % rowWidth	;
 
 			var rand = randBetween(1,3);
+			//debug line
+			//console.log(rand);
 
+			//peppers are less common than tomatoes
 			if (rand === 3){
 				this.plants.push(new Pepper(row,col));
 			}else{
@@ -266,7 +269,7 @@ function Game() {
 //global function call
 function randBetween(min, max) {
 	//gets a random integer between min and max, inclusive
-	return Math.floor(Math.random() * (max - min)) + min;
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //global variable calls
 var globalGuessCount = 15;
