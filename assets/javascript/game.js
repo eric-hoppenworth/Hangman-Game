@@ -182,7 +182,7 @@ function Game() {
 
 			var rand = randBetween(1,3);
 			//debug line
-			//console.log(rand);
+			console.log(rand);
 
 			//peppers are less common than tomatoes
 			if (rand === 3){
