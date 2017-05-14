@@ -65,7 +65,7 @@ class Pepper extends Plant{
 		this.type = "pepper";
 		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
 		this.cycle = 2;
-		this.fruitCount = 3;
+		this.fruitCount = 2;
 		this.scoreElem = document.getElementById(this.type + "Score");
 		this.elem.src = this.image;
 	}
@@ -180,8 +180,15 @@ function Game() {
 			var row = Math.floor(this.plants.length/rowWidth);
 			var col = this.plants.length % rowWidth	;
 
-			//this.plants.push(new Tomato(row,col));
-			this.plants.push(new Pepper(row,col));
+			var rand = randBetween(1,3);
+
+			if (rand === 3){
+				this.plants.push(new Pepper(row,col));
+			}else{
+				this.plants.push(new Tomato(row,col));
+			}
+			
+			
 		}
 		
 
@@ -208,19 +215,23 @@ function Game() {
 	this.newWord = function(){
 		waiting = false;
 		//get a new word from some list somewhere
-		var rand = getRandomInt(0,myWords.length-1);
+		var rand = randBetween(0,myWords.length-1);
 		this.word = myWords[rand];
 		myWords.splice(rand,1);
 		//debug line
 		//this.word = "horticulturalist";
+		//console.log(this.word);
+
 		//split the chosen word into an array of words
 		this.words = this.word.split(" ");
 		this.remainingLetters = 0;
-		//clear out the puzzle
+		//clear out the old puzzle
 		var txt;
 		while (this.puzzle.hasChildNodes()) {
 			this.puzzle.removeChild(this.puzzle.lastChild);
 		}
+
+		//print the new puzzle
 		for (var j = 0; j< this.words.length; j++) {
 			txt = "";
 			this.remainingLetters += this.words[j].length;
@@ -244,8 +255,7 @@ function Game() {
 		//Catches letters only
 		if (waiting){
 			myGame.newWord();
-		}
-		if ((charCode >= 97 )&&(charCode <= 122)){
+		} else if ((charCode >= 97 )&&(charCode <= 122)){
 			var letter = String.fromCharCode(charCode);
 			//should come in as lowercase anyway, but just to be sure
 			myGame.guess(letter.toLowerCase());
@@ -253,13 +263,12 @@ function Game() {
 		
 	}
 }
-function getRandomInt(min, max) {
+//global function call
+function randBetween(min, max) {
 	//gets a random integer between min and max, inclusive
-	min = Math.ceil(min);
-	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min)) + min;
 }
-
+//global variable calls
 var globalGuessCount = 15;
 var myGame = new Game();
 var myWords = wordList;
@@ -270,6 +279,8 @@ var waiting = true;
 var lastPlantStage = 3;
 var tomScore = 0;
 var pepScore = 0;
+
+//script
 
 //create a plant and start the game.
 myGame.plants.push(new Tomato(0,0));
