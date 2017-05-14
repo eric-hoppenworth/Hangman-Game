@@ -9,7 +9,7 @@ class Plant {
 
 		//this will be overridden by the other classes
 		this.type = "plant";
-	}
+	};
 
 	grow() {
  		//alert(this.type + " is growing");
@@ -24,14 +24,14 @@ class Plant {
  		this.condition = 0;
 		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
 		this.elem.src = this.image;
-	}
+	};
 
 	wilt() {
 		//change wilt to the next stage
 		this.condition = 1;
 		this.image = "assets/images/" + this.type + this.stage + this.condition + ".png";
 		this.elem.src = this.image;
-	}
+	};
 
 	kill(myGame) {
 		//this kills the plant
@@ -41,8 +41,8 @@ class Plant {
 		//technically this functionality is broken, but when .kill is called I am only ever
 		//killing the last plant in the array.
 		myGame.plants.splice(-1,1);
-	}
-}
+	};
+};
 //Tomato class, a specific type of plant
 class Tomato extends Plant{
 	constructor(row,col){
@@ -56,7 +56,7 @@ class Tomato extends Plant{
 		this.elem.src = this.image;
 
 	}
-}
+};
 //Pepper class, a specfic type of plant
 class Pepper extends Plant{
 	constructor(row,col){
@@ -69,7 +69,7 @@ class Pepper extends Plant{
 		this.scoreElem = document.getElementById(this.type + "Score");
 		this.elem.src = this.image;
 	}
-}
+};
 
 //object constructor for game engine
 function Game() {
@@ -166,7 +166,7 @@ function Game() {
 		} else if (isGuessed === true){
 			//do nothing if the letter has already been guessed
 		}
-	}
+	};
 
 	this.win = function() {
 		//alert("You got the word-- " + this.word.toUpperCase());
@@ -190,15 +190,12 @@ function Game() {
 			}else{
 				this.plants.push(new Tomato(row,col));
 			}
-			
-			
 		}
 		
-
 		//start a newWord
 		//this.newWord();
 		waiting = true;
-	}
+	};
 
 	this.lose = function(){
 		//kill any plants based on the number of missing letters
@@ -212,8 +209,7 @@ function Game() {
 		//start a newWord
 		//this.newWord();
 		waiting = true;
-
-	}
+	};
 
 	this.newWord = function(){
 		waiting = false;
@@ -251,7 +247,7 @@ function Game() {
 		this.guessLetters.nodeValue = " ";
 		this.guessCount = globalGuessCount;
 		this.guessCountNode.nodeValue = this.guessCount;
-	}
+	};
 	
 	document.onkeypress = function(event) {
 		var charCode = event.which;
@@ -264,13 +260,13 @@ function Game() {
 			myGame.guess(letter.toLowerCase());
 		}
 		
-	}
+	};
 }
 //global function call
 function randBetween(min, max) {
 	//gets a random integer between min and max, inclusive
 	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 //global variable calls
 var globalGuessCount = 15;
 var myGame = new Game();

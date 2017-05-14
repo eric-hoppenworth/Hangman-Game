@@ -30,6 +30,6 @@ var wordList = [ "lawn", "patio", "landscaping", "nursery", "backyard", "orchard
 "collard green", "endive", "fennel", "anise", "caraway", "cilantro", "chamomile", 
 "dill", "lavender", "lemon grass", "marjoram", "oregano", "rosemary", "sage", "kale", 
 "kohlrabi", "maize", "mushroom", "mustard green", "spinach", "okra", "onion", "garlic", 
-"lee", "shallot", "scallion", "pepper", "jalapeno", "habanero", "paprika", "rhubarb", 
+"shallot", "scallion", "pepper", "jalapeno", "habanero", "paprika", "rhubarb", 
 "ginger", "turnip", "radish", "horseradish", "acorn squash", "butternut squash", 
 "zucchini", "pumpkin", "potato", "sweet potato"];
