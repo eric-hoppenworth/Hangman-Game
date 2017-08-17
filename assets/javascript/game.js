@@ -43,6 +43,7 @@ class Plant {
 		myGame.plants.splice(-1,1);
 	};
 };
+
 //Tomato class, a specific type of plant
 class Tomato extends Plant{
 	constructor(row,col){
@@ -57,6 +58,7 @@ class Tomato extends Plant{
 
 	}
 };
+
 //Pepper class, a specfic type of plant
 class Pepper extends Plant{
 	constructor(row,col){
@@ -73,7 +75,7 @@ class Pepper extends Plant{
 
 //object constructor for game engine
 function Game() {
-	 
+
 	this.guessLetters = document.getElementById("guessLetters").firstChild;
 	this.guessCountNode = document.getElementById("guessCount").firstChild;
 	this.guessCount = globalGuessCount;
@@ -132,7 +134,7 @@ function Game() {
 				txt = "";
 			}
 			
-			if (isMatched) {
+			if (isMatched === true) {
 				//check if the puzzle is finished
 				//this does not correct for spaceBar characters
 				if (this.remainingLetters === 0){
@@ -141,6 +143,7 @@ function Game() {
 				}
 			} else {
 				//if no match was found, that letter will be added to the guessLetters
+				//.join method to add a seperator
 				this.guessLetters.nodeValue += letter.toUpperCase() + " , ";
 				//and the remaining guesses will decrease
 				this.guessCount -= 1;
@@ -229,7 +232,8 @@ function Game() {
 		while (this.puzzle.hasChildNodes()) {
 			this.puzzle.removeChild(this.puzzle.lastChild);
 		}
-
+		//garden
+		//remainLetters = 6
 		//print the new puzzle
 		for (var j = 0; j< this.words.length; j++) {
 			txt = "";
@@ -251,9 +255,11 @@ function Game() {
 	
 	document.onkeypress = function(event) {
 		var charCode = event.which;
+		//keyCode
 		//Catches letters only
 		if (waiting){
 			myGame.newWord();
+			//keyCode (64,91)
 		} else if ((charCode >= 97 )&&(charCode <= 122)){
 			var letter = String.fromCharCode(charCode);
 			//should come in as lowercase anyway, but just to be sure
@@ -261,7 +267,8 @@ function Game() {
 		}
 		
 	};
-}
+};
+
 //global function call
 function randBetween(min, max) {
 	//gets a random integer between min and max, inclusive
