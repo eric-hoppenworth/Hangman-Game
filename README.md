@@ -1,8 +1,8 @@
 # Hangman-Game
-a browser-based js hangman game
+A browser-based javaScript Hangman game.
 
+This game is meant to showcase basic logic and HTML DOM manipulation using vanilla JavaScript.
 
-Need to add:
---create pepper plants
---pepper:(21,31,40,41,50,51)
-
+The Player will guess letters for gardening themed words.
+As words are guessed correctly, plants will grow and eventually reward the player with fruit.
+Incorrect guesses will make plants wilt, fruit rot, or even make plants die.
